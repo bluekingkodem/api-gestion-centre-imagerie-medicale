@@ -10,8 +10,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  res.send("Hello Express !");
-});
+app.use("/user", require('./routes/userRoutes'))
+app.use("/role", require('./routes/roleRoutes'))
+app.use("/discipline", require('./routes/disciplineRouters'))
+app.use("/healthT", require('./routes/roleRoutes'))
 
 app.listen(port, () => console.log(`Server listening on ${port}`));
