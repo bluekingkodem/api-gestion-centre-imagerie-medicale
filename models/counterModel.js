@@ -11,6 +11,6 @@ const counterSchema = new mongoose.Schema({
     }
 })
 
-const CounterModel = mongoose.Model('Counter', counterSchema)
+const CounterModel = mongoose.model('Counter', counterSchema)
 
 module.exports = CounterModel

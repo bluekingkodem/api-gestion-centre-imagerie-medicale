@@ -22,12 +22,12 @@ const register = asyncHandler(async (req, res) => {
         return res.status(409).json({ error: 'Cet utilisateur existe deja!' })
     }
 
-    code = generateUserCode("administrateur")
+    code = generateUserCode("admin")
 
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
 
-    const role = await Role.findOne({ name: "administrateur" })
+    const role = await Role.findOne({ name: "admin" })
 
     if (!role) {
         res.status(400).json({ error: "Ce role n'existe pas" })
@@ -67,7 +67,7 @@ const login = asyncHandler(async (req, res) => {
         return res.status(400).json({ error: 'Veuillez remplir tous les champs' })
     }
 
-    const user = await User.findOne({ email: email })
+    const user = await User.findOne({ email })
 
     if (!user) {
         return res.status(400).json({ error: 'Email incorrect' })
@@ -76,16 +76,17 @@ const login = asyncHandler(async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
-        res.status(400).json({ error: 'Mot de passe incorrect' })
+        return res.status(400).json({ error: 'Mot de passe incorrect' })
     }
 
     res.json(
         {
-            success: 'Vous êtes connecté',
+            success: true,
             _id: user._id,
             name: user.name,
             email: user.email,
-            token: generateJWTtoken(user._id)
+            role: user.role, // 👈 IMPORTANT
+            token: generateJWTtoken(user._id),
         }
     )
 

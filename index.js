@@ -16,5 +16,6 @@ app.use("/discipline", require('./routes/disciplineRouters'))
 app.use("/healthT", require('./routes/roleRoutes'))
 app.use("/categoryEx", require('./routes/ExamCategoryRouters'))
 app.use("/typeEx", require('./routes/ExamTypeRoutes'))
+app.use("/examReport", require('./routes/examReportRoutes'))
 
 app.listen(port, () => console.log(`Server listening on ${port}`));

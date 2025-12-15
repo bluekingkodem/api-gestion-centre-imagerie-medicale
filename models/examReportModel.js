@@ -7,14 +7,18 @@ const examReportSchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
+        name: {
+            type: String,
+            required: true,
+            unique: true,
+        },
         indication: {
             type: String,
             required: true,
-            default: 'Bilan'
         },
         technical: {
             type: String,
-            default: null
+            required: true,
         },
         result: {
             type: String,
