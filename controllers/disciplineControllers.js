@@ -1,65 +1,48 @@
 const asyncHandler = require('express-async-handler');
 const Discipline = require('../models/disciplineModel')
 
+// Creer discipline
 const createDisc = asyncHandler(async (req, res) => {
     const { name } = req.body
 
     if (!name) {
-        return res.status(400).json({ error: 'Veuillez remplir ce champ' })
+        res.status(400)
+        throw new Error("Veuillez remplir ce champ")
     }
 
-    const disciplineExist = await Discipline.findOne({ name: name })
+    const discipline = await Discipline.findOne({ name: name })
 
-    if (disciplineExist) {
-        return res.status(409).json({ error: 'Ce role existe deja!' })
+    if (discipline) {
+        res.status(409)
+        throw new Error('Cette discipline existe deja !')
     }
 
-    const nameDiscipline = await Discipline.create({ name: name })
+    const newDiscipline = await Discipline.create({ name: name })
 
-    if (nameDiscipline) {
+    if (newDiscipline) {
         res.status(201).json(
             {
-                success: 'Discipline créé avec succès!'
+                success: 'Discipline créé avec succès!',
+                discipline: newDiscipline
             }
         )
     }
 })
 
-const createRole = asyncHandler(async (req, res) => {
-    const { name } = req.body
-
-    if (!name) {
-        return res.status(400).json({ error: 'Veuillez remplir ce champ' })
-    }
-
-    const roleExist = await Role.findOne({ name: name })
-
-    if (roleExist) {
-        return res.status(409).json({ error: 'Ce role existe deja!' })
-    }
-
-    const nameRole = await Role.create({ name: name })
-
-    if (nameRole) {
-        return res.status(201).json(
-            {
-                success: 'Role créé avec succès!'
-            }
-        )
-    }
-})
-
+// Meettre a jour une discipline
 const updateDisc = asyncHandler(async (req, res) => {
     const { name } = req.body
 
     if (!name) {
-        return res.status(400).json({ error: 'Veuillez remplir ce champ' });
+        res.status(400)
+        throw new Error('Veuillez remplir ce champ')
     }
 
     const disc = await Discipline.findById(req.params.id)
 
     if (!disc) {
-        return res.status(400).json({ error: "Cette discipline n'existe pas" })
+        res.status(400)
+        throw new Error("Cette discipline n'existe pas")
     }
 
     const updatedDisc = await Discipline.findByIdAndUpdate(
@@ -72,15 +55,17 @@ const updateDisc = asyncHandler(async (req, res) => {
 
     res.status(200).json({
         success: 'Discipline modifiée avec succès',
-        role: updatedRole
+        discipline: updatedDisc
     })
 })
 
+// Supprimer une discipline
 const deleteDisc = asyncHandler(async (req, res) => {
     const disc = await Discipline.findById(req.params.id)
 
     if (!disc) {
-        return res.status(400).json({ error: "Cette discipline n'existe pas" })
+        res.status(400)
+        throw new Error("Cette discipline n'existe pas")
     }
 
     const deletedDisc = await Discipline.findByIdAndDelete(req.params.id)

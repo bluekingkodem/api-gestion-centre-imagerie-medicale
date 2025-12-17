@@ -1,19 +1,22 @@
 const asyncHandler = require('express-async-handler');
 const HealthTraining = require('../models/healthTrainingModel')
 
+// Creer une formation sanitaire
 const createHealthT = asyncHandler(async (req, res) => {
     const {name} = req.body
 
     if(!name)
     {
-        return res.status(400).json({error: 'Veuillez remplir ce champ'})
+        res.status(400)
+        throw new Error('Veuillez remplir ce champ')
     }
 
-    const healthTrainingExist = await HealthTraining.findOne({name: name})
+    const healthTraining = await HealthTraining.findOne({name: name})
 
-    if(healthTrainingExist)
+    if(healthTraining)
     {
-        return res.status(409).json({error: 'Cette formation sanitaire existe deja!'})
+        res.status(409)
+        throw new Error(`La formation sanitaire ${healthTraining.name} existe déja !`)
     }
 
     const nameHealthTraining = await HealthTraining.create({name: name})
@@ -22,23 +25,28 @@ const createHealthT = asyncHandler(async (req, res) => {
     {
         res.status(201).json(
             {
-                success: 'Formation sanitaire créé avec succès!'
+                success: 'Formation sanitaire créé avec succès!',
+                nameHealthTraining
             }
         )
     }
 })
 
+// Mettre a jour une formation sanitaire
 const updateHealthT = asyncHandler(async (req, res) => {
     const { name } = req.body
 
-    if (!name) {
-        return res.status(400).json({ error: 'Veuillez remplir ce champ' });
+   if(!name)
+    {
+        res.status(400)
+        throw new Error('Veuillez remplir ce champ')
     }
 
     const healthT = await HealthTraining.findById(req.params.id)
 
     if (!healthT) {
-        return res.status(400).json({ error: "Cette formation sanitaire n'existe pas" })
+        res.status(400)
+        throw new Error(`La formation sanitaire ${healthT.name} n'existe pas !`)
     }
 
     const updatedHealthT = await HealthTraining.findByIdAndUpdate(
@@ -55,11 +63,13 @@ const updateHealthT = asyncHandler(async (req, res) => {
     })
 })
 
+// Supprimer une formation sanitaire
 const deleteHealthT = asyncHandler(async (req, res) => {
     const healthT = await HealthTraining.findById(req.params.id)
 
     if (!healthT) {
-        return res.status(400).json({ error: "Cette formation sanitaire n'existe pas" })
+        res.status(400)
+        throw new Error("Cette formation sanitaire n'existe pas")
     }
 
     const deletedHealthT = await HealthTraining.findByIdAndDelete(req.params.id)
