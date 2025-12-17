@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router()
+const auth = require('../middlewares/authMiddleware')
 
 const { createHealthT, updateHealthT, deleteHealthT } = require('../controllers/healthTrainingControllers');
 
-router.post('/create', createHealthT);
-router.put('/update', updateHealthT);
-router.delete('/delete', deleteHealthT);
+router.post('/create', auth, createHealthT);
+router.put('/update', auth, updateHealthT);
+router.delete('/delete', auth, deleteHealthT);
 
 module.exports = router
