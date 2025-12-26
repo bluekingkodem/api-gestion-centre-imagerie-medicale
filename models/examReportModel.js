@@ -35,7 +35,11 @@ const examReportSchema = new mongoose.Schema(
         id_exam_type: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Exam_type'
-        }
+        },
+        id_user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
     },
     { timestamps: true }
 )

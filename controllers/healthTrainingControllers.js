@@ -1,6 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const HealthTraining = require('../models/healthTrainingModel')
 
+const getNextHealthTrainingNumber = require('../utils/getNextHealthTrainingNumber')
+
 // Creer une formation sanitaire
 const createHealthT = asyncHandler(async (req, res) => {
     const {name} = req.body
@@ -19,7 +21,17 @@ const createHealthT = asyncHandler(async (req, res) => {
         throw new Error(`La formation sanitaire ${healthTraining.name} existe déja !`)
     }
 
-    const nameHealthTraining = await HealthTraining.create({name: name})
+    const code = await getNextHealthTrainingNumber()
+
+    const userId = req.user._id
+
+    const nameHealthTraining = await HealthTraining.create(
+        {
+            code: code,
+            name: name,
+            id_user: userId
+        }
+    )
     
     if(nameHealthTraining)
     {

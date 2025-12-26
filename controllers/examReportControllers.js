@@ -16,6 +16,7 @@ const createExamReport = asyncHandler(async (req, res) => {
 
     const nameUpper = name.toUpperCase()
     const nameExamReportExist = await ExamReport.findOne({ name: nameUpper })
+
     if (nameExamReportExist) {
         res.status(400)
         throw new Error(`Le modèle de compte rendu d'examen ${name} existe déja !`)
@@ -32,6 +33,8 @@ const createExamReport = asyncHandler(async (req, res) => {
         throw new Error("Ce code existe déja !")
     }
 
+    const userId = req.user._id
+
     const examReport = await ExamReport.create(
         {
             code: code,
@@ -41,7 +44,8 @@ const createExamReport = asyncHandler(async (req, res) => {
             result,
             conclusion,
             id_exam_category: category._id,
-            id_exam_type: type._id
+            id_exam_type: type._id,
+            id_user: userId
         }
     )
 
@@ -110,8 +114,40 @@ const deleteExamReport = asyncHandler(async (req, res) => {
 
 })
 
+// Afficher un unique modele d'examen
+const getExamReport = asyncHandler(async (req, res) => {
+    const examReport = ExamReport.findById(req.params.id)
+
+    if(!examReport)
+    {
+        res.status(404)
+        throw new Error("Ce modèle d'examen n'est pas disponible !")
+    }
+
+    res.status(200).json({
+        examReport
+    })
+})
+
+// Afficher tous les modeles d'examen
+const getAllExamReport = asyncHandler(async (req, res) => {
+    const examReport = ExamReport.find()
+
+    if(examReport.length === 0)
+    {
+        res.status(404)
+        throw new Error("Aucun modèle d'examen disponible !")
+    }
+
+    res.status(200).json({
+        examReport
+    })
+})
+
 module.exports = {
     createExamReport,
     updateExamReport,
-    deleteExamReport
+    deleteExamReport,
+    getExamReport, 
+    getAllExamReport
 }

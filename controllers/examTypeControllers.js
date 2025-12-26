@@ -79,6 +79,7 @@ const updateType = asyncHandler(async (req, res) => {
     })
 })
 
+// Supprimer un type d'examen
 const deleteType = asyncHandler(async (req, res) => {
     const type = await ExamType.findById(req.params.id)
 
@@ -95,8 +96,40 @@ const deleteType = asyncHandler(async (req, res) => {
     })
 })
 
+// Afficher un unique type d'examen
+const getExamType = asyncHandler(async (req, res) => {
+    const examType = await ExamType.findById(req.params.id)
+
+    if(!examType)
+    {
+        res.status(404)
+        throw new Error("Type d'examen indisponible !")
+    }
+
+    res.status(200).json({
+        examType
+    })
+})
+
+// Afficher tous les types d'examen
+const getAlltExamType = asyncHandler(async (req, res) => {
+    const examType = await ExamType.find()
+
+    if(examType.length === 0)
+    {
+        res.status(404)
+        throw new Error("Aucun type d'examen disponible !")
+    }
+
+    res.status(200).json({
+        examType
+    })
+})
+
 module.exports = {
     createType,
     updateType,
-    deleteType
+    deleteType,
+    getExamType,
+    getAlltExamType
 }
