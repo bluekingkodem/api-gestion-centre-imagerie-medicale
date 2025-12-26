@@ -14,7 +14,7 @@ const examSchema = new mongoose.Schema(
         },
         technical: {
             type: String,
-            default: null
+            default: ""
         },
         result: {
             type: String,
@@ -28,28 +28,28 @@ const examSchema = new mongoose.Schema(
             type: String,
             required: true,
             enum: ['on hold', 'in progress', 'finished', 'canceled'],
-            default: 'En attente'
+            default: 'on hold'
         },
         id_user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         },
-        id_exam_model: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Exam_model'
-        },
-        id_exam_category: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Exam_category'
-        },
-        id_exam_type: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Exam_type'
-        },
-        id_invoice: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Invoice'
-        },
+        // id_exam_report: {
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: 'Exam_report'
+        // },
+        // id_exam_category: {
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: 'Exam_category'
+        // },
+        // id_exam_type: {
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: 'Exam_type'
+        // },
+        // id_invoice: {
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: 'Invoice'
+        // },
     },
     { timestamps: true }
 )

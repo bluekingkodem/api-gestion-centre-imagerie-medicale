@@ -29,7 +29,7 @@ const createDisc = asyncHandler(async (req, res) => {
     }
 })
 
-// Meettre a jour une discipline
+// Mettre a jour une discipline
 const updateDisc = asyncHandler(async (req, res) => {
     const { name } = req.body
 
@@ -75,6 +75,8 @@ const deleteDisc = asyncHandler(async (req, res) => {
         discipline: deletedDisc
     })
 })
+
+// afficher une unique discipline
 
 module.exports = {
     createDisc,

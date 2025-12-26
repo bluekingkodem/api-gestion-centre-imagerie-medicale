@@ -29,17 +29,20 @@ const createType = asyncHandler(async (req, res) => {
         throw new Error('Ce code existe deja')
     }
 
+    const userId = req.user._id
+
     const nameType = await ExamType.create(
         {
             name: nameUpper,
-            code: code
+            code: code,
+            id_user: userId
         }
     )
 
     if (nameType) {
-        res.status(201).json({ 
+        res.status(201).json({
             success: `Le type d'examen ${nameUpper} a été crée avec succès`,
-            nameType 
+            nameType
         })
     }
 })

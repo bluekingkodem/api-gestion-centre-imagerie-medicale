@@ -20,6 +20,7 @@ const createCategory = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error(`${category.name} existe deja`)
     }
+
     let code = await generateCodeExamCategory()
     const codeExist = await ExamCategory.findOne({code: code})
 
@@ -29,10 +30,13 @@ const createCategory = asyncHandler(async (req, res) => {
         throw new Error('Ce code existe deja')
     }
 
+    const userId = req.user._id
+
     const nameCategory = await ExamCategory.create(
         {
             name: nameUpper,
-            code: code
+            code: code,
+            id_user: userId
         }
     )
 

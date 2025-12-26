@@ -4,7 +4,7 @@ const { register, login, createUser, updateUser, deleteUser } = require('../cont
 const auth = require('../middlewares/authMiddleware')
 
 router.post('/register', register)
-router.post('/login', auth, login)
+router.post('/login', login)
 router.post('/create', auth, createUser)
 router.put('/update/:id', auth, updateUser)
 router.delete('/delete/:id', auth, deleteUser)

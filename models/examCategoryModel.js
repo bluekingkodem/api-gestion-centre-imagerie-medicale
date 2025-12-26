@@ -12,6 +12,11 @@ const examCategorySchema = new mongoose.Schema(
             required: true,
             unique: true
         },
+        id_user: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User'
+        },
     },
     { timestamps: true }
 )

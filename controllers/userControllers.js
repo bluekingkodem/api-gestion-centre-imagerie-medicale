@@ -34,7 +34,7 @@ const register = asyncHandler(async (req, res) => {
     const role = await Role.findOne({ name: "admin" })
 
     if (!role) {
-        res.status(400)
+        res.status(409)
         throw new Error("Ce role existe deja");
     }
 
@@ -78,7 +78,7 @@ const login = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email })
 
     if (!user) {
-        res.status(400)
+        res.status(404)
         throw new Error("Cet utilisateur n'existe pas");
     }
 
@@ -91,11 +91,11 @@ const login = asyncHandler(async (req, res) => {
 
     res.json(
         {
-            success: true,
+            success: `Bienvenue ${user.name}`,
             _id: user._id,
             name: user.name,
             email: user.email,
-            role: user.role, // 👈 IMPORTANT
+            role: user.id_role.name, 
             token: generateJWTtoken(user._id),
         }
     )
@@ -142,7 +142,7 @@ const createUser = asyncHandler(async (req, res) => {
     const roleUser = await Role.findOne({ name: role })
 
     if (!roleUser) {
-        res.status(400)
+        res.status(404)
         throw new Error("Rôle invalide")
     }
 
@@ -212,7 +212,7 @@ const updateUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
 
     if (!user) {
-        res.status(400)
+        res.status(404)
         throw new Error("Cet utilisateur n'existe pas")
     }
 
@@ -241,7 +241,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
 
     if (!user) {
-        res.status(400)
+        res.status(404)
         throw new Error("Cet utilisateur n'existe pas")
     }
 
