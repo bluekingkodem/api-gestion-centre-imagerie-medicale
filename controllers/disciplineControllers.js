@@ -77,9 +77,39 @@ const deleteDisc = asyncHandler(async (req, res) => {
 })
 
 // afficher une unique discipline
+const getDisc = asyncHandler(async (req, res) => {
+    const disc = await Discipline.findById(req.params.id)
+
+    if(!disc)
+    {
+        res.status(404)
+        throw new Error("Cette discipline n'existe pas!")
+    }
+
+    res.status(200).json({
+        disc
+    })
+})
+
+// afficher toutes les disciplines
+const getAllDisc = asyncHandler(async (req, res) => {
+    const disc = await Discipline.find()
+
+    if(disc.length === 0)
+    {
+        res.status(404)
+        throw new Error("Aucune discipline !")
+    }
+
+    res.status(200).json({
+        disc
+    })
+})
 
 module.exports = {
     createDisc,
     updateDisc,
-    deleteDisc
+    deleteDisc,
+    getDisc,
+    getAllDisc
 }

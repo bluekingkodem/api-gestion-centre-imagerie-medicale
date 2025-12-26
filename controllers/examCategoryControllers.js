@@ -96,8 +96,40 @@ const deleteCategory = asyncHandler(async (req, res) => {
     })
 })
 
+// Afficher une unique categorie d'examen
+const getExamCategory = asyncHandler(async (req, res) => {
+    const examCategory = await ExamCategory.findById(req.params.id)
+
+    if(!examCategory)
+    {
+        res.status(404)
+        throw new Error("Cette category d'examen n'existe pas !")
+    }
+
+    res.status(200).json({
+        examCategory
+    })
+})
+
+// Afficher toutes les categories d'examen
+const getAllExamCategory = asyncHandler(async (req, res) => {
+    const examCategory = await ExamCategory.find()
+
+    if(examCategory.length === 0)
+    {
+        res.status(404)
+        throw new Error("Aucune categorie d'examen !")
+    }
+
+    res.status(200).json({
+        examCategory
+    })
+})
+
 module.exports = {
     createCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    getExamCategory, 
+    getAllExamCategory
 }
