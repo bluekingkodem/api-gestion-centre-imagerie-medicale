@@ -151,6 +151,8 @@ const createUser = asyncHandler(async (req, res) => {
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
 
+    const userId = req.user._id
+
     const newUser = await User.create({
         code: code,
         name,
@@ -161,6 +163,7 @@ const createUser = asyncHandler(async (req, res) => {
         password: hashedPassword,
         address,
         city,
+        id_user: userId,
         id_role: roleUser._id,
         id_disc: disc._id,
         id_healthT: healthT._id
@@ -181,6 +184,7 @@ const createUser = asyncHandler(async (req, res) => {
     }
 })
 
+// Modifier un utilisateur
 const updateUser = asyncHandler(async (req, res) => {
     const { name, surname, age, contact, address, city, discipline, health_training } = req.body
 
@@ -237,6 +241,7 @@ const updateUser = asyncHandler(async (req, res) => {
     })
 })
 
+// Supprimer un utilisateur
 const deleteUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
 
@@ -253,10 +258,42 @@ const deleteUser = asyncHandler(async (req, res) => {
     })
 })
 
+// Afficher un utilisateur
+const getUser = asyncHandler(async (req, res) => {
+    const user = User.findById(req.params.id)
+
+    if(!user)
+    {
+        res.status(404)
+        throw new Error("Utilisateur indisponible")
+    }
+
+    res.status(200).json({
+        user
+    })
+})
+
+// Afficher tous les utilisateurs
+const getAllUser = asyncHandler(async (req, res) => {
+    const user = User.find()
+
+    if(user.length === 0)
+    {
+        res.status(404)
+        throw new Error("Aucun utilisateur")
+    }
+
+    res.status(200).json({
+        user
+    })
+})
+
 module.exports = {
     register,
     login,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUser,
+    getAllUser
 }

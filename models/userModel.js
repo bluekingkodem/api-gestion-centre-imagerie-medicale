@@ -42,6 +42,11 @@ const userSchema = mongoose.Schema(
             enum: ['active', 'suspended'],
             default: 'active'
         },
+        id_user: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User'
+        },
         id_role: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
