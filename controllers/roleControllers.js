@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Role = require('../models/roleModel')
 
+// Creer un role
 const createRole = asyncHandler(async (req, res) => {
     const {name} = req.body
 
@@ -29,6 +30,7 @@ const createRole = asyncHandler(async (req, res) => {
     }
 })
 
+// Modifier un role
 const updateRole = asyncHandler(async (req, res) => {
     const { name } = req.body
 
@@ -58,6 +60,7 @@ const updateRole = asyncHandler(async (req, res) => {
     })
 })
 
+// Supprimer un role
 const deleteRole = asyncHandler(async (req, res) => {
     const role = await Role.findById(req.params.id)
 
@@ -74,8 +77,40 @@ const deleteRole = asyncHandler(async (req, res) => {
     })
 })
 
+// Afficher un seul role
+const getRole = asyncHandler(async (req, res) => {
+    const role = Role.findById(req.params.id)
+
+    if(!role)
+    {
+        res.status(404)
+        throw new Error("Role indisponible")
+    }
+
+    res.status(200).json({
+        role
+    })
+})
+
+// Afficher tous les roles
+const getAllRole = asyncHandler(async (req, res) => {
+    const role = Role.find()
+
+    if(role.length === 0)
+    {
+        res.status(404)
+        throw new Error("Aucun Role")
+    }
+
+    res.status(200).json({
+        role
+    })
+})
+
 module.exports = {
     createRole,
     updateRole,
-    deleteRole
+    deleteRole, 
+    getRole,
+    getAllRole
 }

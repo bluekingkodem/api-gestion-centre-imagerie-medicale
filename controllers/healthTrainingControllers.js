@@ -92,8 +92,40 @@ const deleteHealthT = asyncHandler(async (req, res) => {
     })
 })
 
+// Afficher une unique formation sanitaire
+const getHealthT = asyncHandler(async (req, res) => {
+    const health_training = HealthTraining.findByIdAndDelete(req.params.id)
+
+    if(!health_training)
+    {
+        res.status(404)
+        throw new Error("Formation sanitaire indisponible")
+    }
+
+    res.status(200).json({
+        health_training
+    })
+})
+
+// Afficher toutes les formations sanitaires
+const getAllHealthT = asyncHandler(async (req, res) => {
+    const health_training = HealthTraining.find()
+
+    if(!health_training.length === 0)
+    {
+        res.status(404)
+        throw new Error("Aucune formation sanitaire")
+    }
+
+    res.status(200).json({
+        health_training
+    })
+})
+
 module.exports = {
     createHealthT,
     updateHealthT,
-    deleteHealthT
+    deleteHealthT,
+    getHealthT,
+    getAllHealthT
 }
